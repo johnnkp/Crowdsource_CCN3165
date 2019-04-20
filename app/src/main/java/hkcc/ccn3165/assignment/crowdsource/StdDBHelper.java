@@ -1,4 +1,4 @@
-package hkcc.ccn3165;
+package hkcc.ccn3165.assignment.crowdsource;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 // Java SE 8與Android 7.x程式設計範例教本
-// Java SE11與Android 9.x程式設計範例教本
+// Java SE 11與Android 9.x程式設計範例教本
 // https://books.google.com.hk/books?id=V5ApDwAAQBAJ
 // https://www.books.com.tw/products/0010753967
 public class StdDBHelper extends SQLiteOpenHelper {

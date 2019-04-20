@@ -1,4 +1,4 @@
-package hkcc.ccn3165;
+package hkcc.ccn3165.assignment.crowdsource;
 
 import android.database.Cursor;
 import android.os.Bundle;

@@ -1,4 +1,4 @@
-package hkcc.ccn3165;
+package hkcc.ccn3165.assignment.crowdsource;
 
 import android.Manifest;
 import android.content.Context;
