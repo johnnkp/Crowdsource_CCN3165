@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         DH = new StdDBHelper(this);
         mGPSService = new GPSService(MainActivity.this);
+        wifi = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
 
         save = (Button) findViewById(R.id.save);
         open = (Button) findViewById(R.id.open);
@@ -57,23 +58,25 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        if (mGPSService.mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            location = mGPSService.getLocation();
-        } else {
+        if (!mGPSService.mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             mGPSService.askUserToOpenGPS();
         }
 
         obtainWifiInfo();
         frequency_of_scanning(f);
-        current_location.setText("Longitude: " + location.getLongitude() + "\nLatitude: " + location.getLatitude());
 
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                double longitude = location.getLongitude();
-                double latitude = location.getLatitude();
                 String wifi = getwifi().toString();
-                DH.input_table(longitude, latitude, wifi);
+                if (location == null) {
+                    DH.input_table(createEmptyLocation().getLongitude(), createEmptyLocation().getLatitude(), wifi);
+                } else {
+                    double longitude, latitude;
+                    longitude = location.getLongitude();
+                    latitude = location.getLatitude();
+                    DH.input_table(longitude, latitude, wifi);
+                }
                 Toast.makeText(MainActivity.this, "Scan result saved to database successfully.", Toast.LENGTH_SHORT).show();
             }
         });
@@ -95,35 +98,25 @@ public class MainActivity extends AppCompatActivity {
         fre.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String sec = fre_set.getText().toString();
-                if (sec == null) {
-                } else {
-                    f = Integer.parseInt(sec);
+                int sec = Integer.parseInt(fre_set.getText().toString());
+                if (sec > 0) {
                     f = f * 1000;
                     frequency_of_scanning(f);
-                    fre_set.setText("");
                 }
+                fre_set.setText("");
             }
         });
     }
 
     private void obtainWifiInfo() {
-        wifi = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
         if (wifi.getWifiState() != WifiManager.WIFI_STATE_ENABLED) {
             wifi.setWifiEnabled(true);
         }
-        StringBuilder scanBuilder = new StringBuilder();
-        List<ScanResult> scanResults = wifi.getScanResults();
-
-        for (ScanResult scanResult : scanResults) {
-            scanBuilder.append("\nSSID: " + scanResult.SSID
-                    + "\nBSSID: " + scanResult.BSSID + "\n");
-        }
-        bssid.setText(scanBuilder);
+        bssid.setText(getwifi());
+        displayLocation();
     }
 
     public StringBuilder getwifi() {
-        wifi = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
         StringBuilder scanBuilder = new StringBuilder();
         List<ScanResult> scanResults = wifi.getScanResults();
 
@@ -195,5 +188,21 @@ public class MainActivity extends AppCompatActivity {
         mBuilder.setView(mview);
         AlertDialog dialog = mBuilder.create();
         dialog.show();
+    }
+
+    private Location createEmptyLocation() {
+        location = new Location("Error");
+        location.setLongitude(-1000);
+        location.setLatitude(-1000);
+        return location;
+    }
+
+    private void displayLocation() {
+        try {
+            location = mGPSService.getLocation();
+            current_location.setText("Longitude: " + location.getLongitude() + "\nLatitude: " + location.getLatitude());
+        } catch (Exception e) {
+            current_location.setText("Location not available");
+        }
     }
 }

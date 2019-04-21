@@ -14,12 +14,10 @@ public class StdDBHelper extends SQLiteOpenHelper {
     private final static String DB = "wifi";
     private final static String TB = "test";
     private final static String Data = "Data";
-    private final static int vs = 2;
-    private final static int version3 = 3;
-    private final static int version4 = 4;
+    private final static int version = 1;
 
     public StdDBHelper(Context context) {
-        super(context, DB, null, version4);
+        super(context, DB, null, version);
     }
 
     // https://tips.androidhive.info/2013/10/android-insert-datetime-value-in-sqlite-database/
