@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String local = getlocation(location);
+                String local = getlocation();
                 String wifi = getwifi().toString();
                 DH.input_table(local, wifi);
             }
@@ -191,29 +191,11 @@ public class MainActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    public String getlocation(Location location) {
-        double longitude = location.getLongitude();
-        double latitude = location.getLatitude();
+    public String getlocation() {
+        double longitude = mGPSService.getLongitude();
+        double latitude = mGPSService.getLatitude();
         String location_1 = ("Longitude: " + longitude + "\nLatitude: " + latitude);
+        current_location.setText(location_1);
         return location_1;
     }
-
-    /* @Override
-    public void onLocationChanged(Location location) {
-        double longitude = location.getLongitude();
-        double latitude = location.getLatitude();
-        current_location.setText("Longitude: " + longitude + "\nLatitude: " + latitude);
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-    } */
 }
