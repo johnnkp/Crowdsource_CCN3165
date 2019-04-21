@@ -116,8 +116,8 @@ public class MainActivity extends AppCompatActivity {
         List<ScanResult> scanResults = wifi.getScanResults();
 
         for (ScanResult scanResult : scanResults) {
-            scanBuilder.append("\nSSID：" + scanResult.SSID
-                    + "\nBSSID:" + scanResult.BSSID + "\n");
+            scanBuilder.append("\nSSID: " + scanResult.SSID
+                    + "\nBSSID: " + scanResult.BSSID + "\n");
         }
         bssid.setText(scanBuilder);
     }
@@ -129,8 +129,8 @@ public class MainActivity extends AppCompatActivity {
 
         for (ScanResult scanResult : scanResults) {
 
-            scanBuilder.append("\nSSID：" + scanResult.SSID
-                    + "\nBSSID:" + scanResult.BSSID + "\n");
+            scanBuilder.append("\nSSID: " + scanResult.SSID
+                    + "\nBSSID: " + scanResult.BSSID + "\n");
         }
         return scanBuilder;
     }
@@ -165,7 +165,11 @@ public class MainActivity extends AppCompatActivity {
                             Cursor cursor = DH.getalldata();
                             StringBuilder stringBuilder = new StringBuilder();
                             while (cursor.moveToNext()) {
-                                stringBuilder.append(cursor.getInt(0) + ":\n" + cursor.getString(1) + "\n" + cursor.getString(2) + "\n");
+                                stringBuilder.append(cursor.getInt(0) + ":\n" +
+                                        cursor.getString(1) + "\n" +
+                                        "Longitude: " + cursor.getString(2) + "\n" +
+                                        "Latitude: " + cursor.getString(3) + "\n" +
+                                        cursor.getString(4) + "\n");
                             }
                             email_content = stringBuilder.toString();
 

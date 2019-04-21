@@ -8,7 +8,8 @@
         android:id="@+id/email_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Input email ID" />
+        android:hint="Input email address"
+        android:inputType="textEmailAddress" />
 
     <EditText
         android:id="@+id/set_title"
