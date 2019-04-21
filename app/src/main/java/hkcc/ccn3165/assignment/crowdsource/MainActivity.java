@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
 
         obtainWifiInfo();
         frequency_of_scanning(f);
-        current_location.setText(getlocation());
+        String current_location = getlocation();
 
         save.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -195,6 +195,7 @@ public class MainActivity extends AppCompatActivity {
         double longitude = location.getLongitude();
         double latitude = location.getLatitude();
         String location_1 = ("Longitude: " + longitude + "\nLatitude: " + latitude);
+        current_location.setText(location_1);
         return location_1;
     }
 }

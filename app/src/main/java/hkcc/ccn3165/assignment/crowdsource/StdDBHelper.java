@@ -13,22 +13,29 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class StdDBHelper extends SQLiteOpenHelper {
     private final static String DB = "wifi";
     private final static String TB = "test";
+    private final static String Data = "Data";
     private final static int vs = 2;
+    private final static int version3 = 3;
 
     public StdDBHelper(Context context) {
-        super(context, DB, null, vs);
+        super(context, DB, null, version3);
     }
 
+    // https://tips.androidhive.info/2013/10/android-insert-datetime-value-in-sqlite-database/
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String SQL = "CREATE TABLE IF NOT EXISTS " + TB + "(_id INTEGER PRIMARY KEY AUTOINCREMENT ,_local VARCHAR(100) ,_wifi VARCHAR(1000))";
+        String SQL = "CREATE TABLE IF NOT EXISTS " +
+                Data +
+                "(_id INTEGER PRIMARY KEY AUTOINCREMENT ," +
+                "_timestamp DATETIME DEFAULT CURRENT_TIMESTAMP," +
+                "_local VARCHAR(100) ,_wifi VARCHAR(1000))";
         db.execSQL(SQL);
 
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        String SQL= "DROP TABLE IF EXISTS " + TB;
+        String SQL= "DROP TABLE IF EXISTS " + Data;
         db.execSQL(SQL);
     }
 
@@ -37,13 +44,13 @@ public class StdDBHelper extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put("_local", local);
         contentValues.put("_wifi", wifi);
-        long result = db.insert(TB,null, contentValues);
+        long result = db.insert(Data,null, contentValues);
         db.close();
     }
 
     public Cursor getalldata(){
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select * from " + TB, null);
+        Cursor cursor = db.rawQuery("select * from " + Data, null);
         return cursor;
     }
 
