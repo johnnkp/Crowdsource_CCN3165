@@ -24,7 +24,7 @@ import android.widget.Toast;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements LocationListener {
+public class MainActivity extends AppCompatActivity {
     CountDownTimer mCountDownTimer;
     public int f = 2000;
     public long startTime;
@@ -32,15 +32,17 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     TextView current_location, bssid;
     Button save, open, email, fre;
     EditText fre_set;
-    private LocationManager lms;
     private WifiManager wifi;
     public StdDBHelper DH = null;
+    GPSService mGPSService;
+    Location location;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         DH = new StdDBHelper(this);
+        mGPSService = new GPSService(MainActivity.this);
 
         save = (Button) findViewById(R.id.save);
         open = (Button) findViewById(R.id.open);
@@ -49,16 +51,17 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         current_location = (TextView) findViewById(R.id.current_location);
         bssid = (TextView) findViewById(R.id.bssid);
         fre_set = (EditText) findViewById(R.id.fre_set);
-        lms = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
-        obtainWifiInfo();
-        frequency_of_scanning(f);
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
             return;
         }
-        final Location location = lms.getLastKnownLocation(lms.NETWORK_PROVIDER);
+
+        if (mGPSService.mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            location = mGPSService.getLocation();
+        } else {
+            mGPSService.askUserToOpenGPS();
+        }
 
         obtainWifiInfo();
         frequency_of_scanning(f);
@@ -188,18 +191,18 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         dialog.show();
     }
 
-    @Override
-    public void onLocationChanged(Location location) {
-        double longitude = location.getLongitude();
-        double latitude = location.getLatitude();
-        current_location.setText("Longitude: " + longitude + "\nLatitude: " + latitude);
-    }
-
     public String getlocation(Location location) {
         double longitude = location.getLongitude();
         double latitude = location.getLatitude();
         String location_1 = ("Longitude: " + longitude + "\nLatitude: " + latitude);
         return location_1;
+    }
+
+    /* @Override
+    public void onLocationChanged(Location location) {
+        double longitude = location.getLongitude();
+        double latitude = location.getLatitude();
+        current_location.setText("Longitude: " + longitude + "\nLatitude: " + latitude);
     }
 
     @Override
@@ -212,6 +215,5 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
     @Override
     public void onProviderDisabled(String provider) {
-    }
-
+    } */
 }
