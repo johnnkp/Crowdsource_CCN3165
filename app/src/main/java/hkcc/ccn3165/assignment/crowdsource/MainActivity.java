@@ -104,17 +104,17 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
     private void obtainWifiInfo() {
         wifi = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
-        if (wifi.getWifiState() == WifiManager.WIFI_STATE_ENABLED) {
-            StringBuilder scanBuilder = new StringBuilder();
-            List<ScanResult> scanResults = wifi.getScanResults();
-
-            for (ScanResult scanResult : scanResults) {
-
-                scanBuilder.append("\nSSID：" + scanResult.SSID
-                        + "\nBSSID:" + scanResult.BSSID + "\n");
-            }
-            bssid.setText(scanBuilder);
+        if (wifi.getWifiState() != WifiManager.WIFI_STATE_ENABLED) {
+            wifi.setWifiEnabled(true);
         }
+        StringBuilder scanBuilder = new StringBuilder();
+        List<ScanResult> scanResults = wifi.getScanResults();
+
+        for (ScanResult scanResult : scanResults) {
+            scanBuilder.append("\nSSID：" + scanResult.SSID
+                    + "\nBSSID:" + scanResult.BSSID + "\n");
+        }
+        bssid.setText(scanBuilder);
     }
 
     public StringBuilder getwifi() {
