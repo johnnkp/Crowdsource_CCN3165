@@ -98,10 +98,13 @@ public class MainActivity extends AppCompatActivity {
         fre.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int sec = Integer.parseInt(fre_set.getText().toString());
-                if (sec > 0) {
-                    f = f * 1000;
-                    frequency_of_scanning(f);
+                try {
+                    int sec = Integer.parseInt(fre_set.getText().toString());
+                    if (sec > 0) {
+                        f = sec * 1000;
+                        frequency_of_scanning(f);
+                    }
+                } catch (Exception e) {
                 }
                 fre_set.setText("");
             }

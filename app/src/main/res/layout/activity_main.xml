@@ -47,7 +47,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/save"
-            android:text="Frequency (second)" />
+            android:text="Change Frequency"
+            android:textAllCaps="false" />
 
         <EditText
             android:id="@+id/fre_set"
@@ -55,6 +56,7 @@
             android:layout_height="match_parent"
             android:layout_below="@+id/save"
             android:layout_toRightOf="@+id/fre"
+            android:hint="Type frequency (seconds) here"
             android:inputType="number" />
 
     </RelativeLayout>
