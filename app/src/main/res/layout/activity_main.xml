@@ -54,7 +54,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/save"
-            android:layout_toRightOf="@+id/fre" />
+            android:layout_toRightOf="@+id/fre"
+            android:inputType="number" />
 
     </RelativeLayout>
 </ScrollView>

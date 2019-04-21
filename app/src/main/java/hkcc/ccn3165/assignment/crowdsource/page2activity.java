@@ -21,8 +21,12 @@ public class page2activity extends AppCompatActivity {
 
         StringBuilder stringBuilder = new StringBuilder();
 
-        while (cursor.moveToNext()){
-            stringBuilder.append(cursor.getInt(0) + ":\n" + cursor.getString(1) + "\n" + cursor.getString(2) + "\n");
+        while (cursor.moveToNext()) {
+            stringBuilder.append(cursor.getInt(0) + ":\n" +
+                    cursor.getString(1) + "\n" +
+                    "Longitude: " + cursor.getString(2) + "\n" +
+                    "Latitude: " + cursor.getString(3) + "\n" +
+                    cursor.getString(4) + "\n");
         }
 
         show.setText(stringBuilder);

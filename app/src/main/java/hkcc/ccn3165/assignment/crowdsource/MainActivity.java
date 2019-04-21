@@ -74,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
                 double latitude = location.getLatitude();
                 String wifi = getwifi().toString();
                 DH.input_table(longitude, latitude, wifi);
+                Toast.makeText(MainActivity.this, "Scan result saved to database successfully.", Toast.LENGTH_SHORT).show();
             }
         });
 
