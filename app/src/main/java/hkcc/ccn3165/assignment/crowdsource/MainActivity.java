@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         DH = new StdDBHelper(this);
         mGPSService = new GPSService(MainActivity.this);
         wifi = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
+        final boolean isPlayServicesInstalled = appInstalledOrNot("com.google.android.gms");
 
         save = (Button) findViewById(R.id.save);
         open = (Button) findViewById(R.id.open);
@@ -59,9 +60,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (!mGPSService.mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            try {
+            if (isPlayServicesInstalled) {
                 new GpsUtils(MainActivity.this).turnGPSOn();
-            } catch (Exception e) {
+            } else {
                 mGPSService.askUserToOpenGPS();
             }
         }
@@ -211,5 +212,16 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e) {
             current_location.setText("Location not available");
         }
+    }
+
+    // https://discuss.erpnext.com/t/how-to-developing-apps-for-android/21016
+    private boolean appInstalledOrNot(String uri) {
+        PackageManager pm = getPackageManager();
+        try {
+            pm.getPackageInfo(uri, PackageManager.GET_ACTIVITIES);
+            return true;
+        } catch (PackageManager.NameNotFoundException e) {
+        }
+        return false;
     }
 }
