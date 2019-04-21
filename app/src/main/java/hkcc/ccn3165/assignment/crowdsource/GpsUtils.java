@@ -49,78 +49,16 @@ public class GpsUtils {
         //**************************
     }
 
-    // method for turn on GPS
-    /* public void turnGPSOn(onGpsListener onGpsListener) {
-
-        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            if (onGpsListener != null) {
-                onGpsListener.gpsStatus(true);
-            }
-        } else {
-            mSettingsClient
-                    .checkLocationSettings(mLocationSettingsRequest)
-                    .addOnSuccessListener((Activity) context, new OnSuccessListener<LocationSettingsResponse>() {
-                        @SuppressLint("MissingPermission")
-                        @Override
-                        public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
-
-                            //  GPS is already enable, callback GPS status through listener
-                            if (onGpsListener != null) {
-                                onGpsListener.gpsStatus(true);
-                            }
-                        }
-                    })
-                    .addOnFailureListener((Activity) context, new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            int statusCode = ((ApiException) e).getStatusCode();
-                            switch (statusCode) {
-                                case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
-
-                                    try {
-                                        // Show the dialog by calling startResolutionForResult(), and check the
-                                        // result in onActivityResult().
-                                        ResolvableApiException rae = (ResolvableApiException) e;
-                                        rae.startResolutionForResult((Activity) context, 0);
-                                    } catch (IntentSender.SendIntentException sie) {
-                                        Log.i(TAG, "PendingIntent unable to execute request.");
-                                    }
-                                    break;
-                                case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
-                                    String errorMessage = "Location settings are inadequate, and cannot be " +
-                                            "fixed here. Fix in Settings.";
-                                    Log.e(TAG, errorMessage);
-
-                                    Toast.makeText((Activity) context, errorMessage, Toast.LENGTH_LONG).show();
-                            }
-                        }
-                    });
-        }
-    } */
-
-    /* public interface onGpsListener {
-        void gpsStatus(boolean isGPSEnable);
-    } */
-
     // method for turn on GPS without onGpsListener
     public void turnGPSOn() {
-
-        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            /* if (onGpsListener != null) {
-                onGpsListener.gpsStatus(true);
-            } */
-        } else {
+        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             mSettingsClient
                     .checkLocationSettings(mLocationSettingsRequest)
                     .addOnSuccessListener((Activity) context, new OnSuccessListener<LocationSettingsResponse>() {
                         @SuppressLint("MissingPermission")
                         @Override
                         public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
-
-                            //  GPS is already enable, callback GPS status through listener
-                            /* if (onGpsListener != null) {
-                                onGpsListener.gpsStatus(true);
-                            } */
+                            // GPS is already enable, callback GPS status through listener
                         }
                     })
                     .addOnFailureListener((Activity) context, new OnFailureListener() {

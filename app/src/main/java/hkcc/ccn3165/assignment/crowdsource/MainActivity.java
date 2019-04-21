@@ -59,7 +59,11 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (!mGPSService.mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            mGPSService.askUserToOpenGPS();
+            try {
+                new GpsUtils(MainActivity.this).turnGPSOn();
+            } catch (Exception e) {
+                mGPSService.askUserToOpenGPS();
+            }
         }
 
         obtainWifiInfo();

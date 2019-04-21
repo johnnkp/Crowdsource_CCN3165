@@ -87,11 +87,7 @@ public class GPSService extends Service implements LocationListener {
                     }
                 }
             }
-            // If reaching here means, we were not able to get location neither from GPS nor Network,
-            if (!isGPSEnabled) {
-                // so asking user to open GPS
-                askUserToOpenGPS();
-            }
+            // If reaching here means, we were not able to get location neither from GPS nor Network
         } catch (Exception e) {
             e.printStackTrace();
         }
