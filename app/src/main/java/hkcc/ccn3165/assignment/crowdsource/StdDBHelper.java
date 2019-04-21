@@ -16,9 +16,10 @@ public class StdDBHelper extends SQLiteOpenHelper {
     private final static String Data = "Data";
     private final static int vs = 2;
     private final static int version3 = 3;
+    private final static int version4 = 4;
 
     public StdDBHelper(Context context) {
-        super(context, DB, null, version3);
+        super(context, DB, null, version4);
     }
 
     // https://tips.androidhive.info/2013/10/android-insert-datetime-value-in-sqlite-database/
@@ -27,8 +28,8 @@ public class StdDBHelper extends SQLiteOpenHelper {
         String SQL = "CREATE TABLE IF NOT EXISTS " +
                 Data +
                 "(_id INTEGER PRIMARY KEY AUTOINCREMENT ," +
-                "_timestamp DATETIME DEFAULT CURRENT_TIMESTAMP," +
-                "_local VARCHAR(100) ,_wifi VARCHAR(1000))";
+                "_timestamp DATETIME DEFAULT CURRENT_TIMESTAMP ," +
+                "_longitude DOUBLE ,_latitude DOUBLE ,_wifi VARCHAR(1000))";
         db.execSQL(SQL);
 
     }
@@ -39,10 +40,11 @@ public class StdDBHelper extends SQLiteOpenHelper {
         db.execSQL(SQL);
     }
 
-    public void input_table(String local, String wifi){
+    public void input_table(double longitude, double latitude, String wifi) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put("_local", local);
+        contentValues.put("_longitude", longitude);
+        contentValues.put("_latitude", latitude);
         contentValues.put("_wifi", wifi);
         long result = db.insert(Data,null, contentValues);
         db.close();

@@ -65,14 +65,15 @@ public class MainActivity extends AppCompatActivity {
 
         obtainWifiInfo();
         frequency_of_scanning(f);
-        String current_location = getlocation();
+        current_location.setText("Longitude: " + location.getLongitude() + "\nLatitude: " + location.getLatitude());
 
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String local = getlocation();
+                double longitude = location.getLongitude();
+                double latitude = location.getLatitude();
                 String wifi = getwifi().toString();
-                DH.input_table(local, wifi);
+                DH.input_table(longitude, latitude, wifi);
             }
         });
 
@@ -189,13 +190,5 @@ public class MainActivity extends AppCompatActivity {
         mBuilder.setView(mview);
         AlertDialog dialog = mBuilder.create();
         dialog.show();
-    }
-
-    public String getlocation() {
-        double longitude = location.getLongitude();
-        double latitude = location.getLatitude();
-        String location_1 = ("Longitude: " + longitude + "\nLatitude: " + latitude);
-        current_location.setText(location_1);
-        return location_1;
     }
 }
