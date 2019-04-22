@@ -171,20 +171,41 @@ public class MainActivity extends AppCompatActivity {
                             String[] recipients = email_name.split(",");
                             email_title = set_title.getText().toString();
                             Cursor cursor = DH.getalldata();
-                            StringBuilder stringBuilder = new StringBuilder();
+                            StringBuilder wifiCSVResult = new StringBuilder("ID,timestamp,Longitude,Latitude,wifi\n");
                             while (cursor.moveToNext()) {
-                                stringBuilder.append(cursor.getInt(0) + ":\n" +
-                                        cursor.getString(1) + "\n" +
-                                        "Longitude: " + cursor.getString(2) + "\n" +
-                                        "Latitude: " + cursor.getString(3) + "\n" +
+                                wifiCSVResult.append(cursor.getInt(0) + "," +
+                                        cursor.getString(1) + "," +
+                                        cursor.getString(2) + "," +
+                                        cursor.getString(3) + "," +
                                         cursor.getString(4) + "\n");
                             }
-                            email_content = stringBuilder.toString();
+                            email_content = "Please save the following content as a csv file and open it in spreadsheet:\n" +
+                                    wifiCSVResult.toString();
 
                             Intent intent = new Intent(Intent.ACTION_SEND);
                             intent.putExtra(Intent.EXTRA_EMAIL, recipients);
                             intent.putExtra(Intent.EXTRA_SUBJECT, email_title);
                             intent.putExtra(Intent.EXTRA_TEXT, email_content);
+
+                            /* try {
+                                // https://blog.csdn.net/qq_25697993/article/details/53583766
+                                Calendar c = Calendar.getInstance();
+                                String wifiCSV = getResources().getString(R.string.app_name) +
+                                        c.get(Calendar.YEAR) + c.get(Calendar.MONTH) + c.get(Calendar.DATE) + "_" +
+                                        c.get(Calendar.HOUR_OF_DAY) + c.get(Calendar.MINUTE) + c.get(Calendar.SECOND) +
+                                        ".csv";
+
+                                FileOutputStream fos = openFileOutput(wifiCSV, Context.MODE_PRIVATE);
+                                fos.write(wifiCSVResult.toString().getBytes());
+                                fos.close();
+
+                                // https://stackoverflow.com/questions/6072895/email-from-internal-storage
+                                intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(getDataDir(), wifiCSV)));
+                            } catch (FileNotFoundException e) {
+                                e.printStackTrace();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            } */
 
                             intent.setType("message/rfc822");
                             startActivity(Intent.createChooser(intent, "choose an email client"));
