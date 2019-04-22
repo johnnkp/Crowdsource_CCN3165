@@ -69,6 +69,11 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+        if (getScreenWidth() <= 720) {
+            fre.setText("Change\nFrequency");
+            fre_set.setHint("Type frequency (seconds)");
+        }
+
         obtainWifiInfo();
         frequency_of_scanning(f);
 
@@ -221,7 +226,7 @@ public class MainActivity extends AppCompatActivity {
         PackageManager pm = getPackageManager();
         try {
             pm.getPackageInfo(uri, PackageManager.GET_ACTIVITIES);
-            if (pm.getPackageInfo(uri, PackageManager.VERSION_CODE_HIGHEST).versionCode < 11925000) {
+            if (pm.getPackageInfo(uri, 0).versionCode < 11925000) {
                 return false;
             }
             return true;

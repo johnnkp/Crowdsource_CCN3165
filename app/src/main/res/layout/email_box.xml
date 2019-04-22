@@ -8,7 +8,7 @@
         android:id="@+id/email_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Input email address"
+        android:hint="Type email address here"
         android:inputType="textEmailAddress" />
 
     <EditText
@@ -16,6 +16,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/email_id"
-        android:hint="Input title" />
+        android:hint="Type title here" />
 
 </RelativeLayout>
