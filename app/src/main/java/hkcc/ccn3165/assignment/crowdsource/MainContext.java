@@ -41,11 +41,18 @@ public enum MainContext {
 
     private Settings settings;
     private MainActivity mainActivity;
+    private WifiManager wifiManager;
+    private GPSService mGPSService;
+    private StdDBHelper dbHelper;
     // private ScannerService scannerService;
     // private VendorService vendorService;
     private Configuration configuration;
     // private FilterAdapter filterAdapter;
     private int screenWidth;
+
+    public WifiManager getWifiManager() {
+        return wifiManager;
+    }
 
     public Settings getSettings() {
         return settings;
@@ -55,6 +62,21 @@ public enum MainContext {
         this.settings = settings;
     }
 
+    public GPSService getGPSService() {
+        return mGPSService;
+    }
+
+    private void setGPSService() {
+        mGPSService = new GPSService(getMainActivity(), getScreenWidth());
+    }
+
+    public StdDBHelper getDBHelper() {
+        return dbHelper;
+    }
+
+    private void setDBHelper() {
+        dbHelper = new StdDBHelper(getContext());
+    }
     /* public VendorService getVendorService() {
         return vendorService;
     }
@@ -122,15 +144,17 @@ public enum MainContext {
 
     public void initialize(@NonNull MainActivity mainActivity) {
         Context applicationContext = mainActivity.getApplicationContext();
-        WifiManager wifiManager = (WifiManager) applicationContext.getSystemService(Context.WIFI_SERVICE);
+        wifiManager = (WifiManager) applicationContext.getSystemService(Context.WIFI_SERVICE);
         Handler handler = new Handler();
         Settings currentSettings = new Settings(new Repository(applicationContext));
         Configuration currentConfiguration = new Configuration();
 
         setMainActivity(mainActivity);
+        setScreenWidth();
+        setGPSService();
+        setDBHelper();
         setConfiguration(currentConfiguration);
         setSettings(currentSettings);
-        setScreenWidth();
         /* setVendorService(VendorServiceFactory.makeVendorService(mainActivity.getResources()));
         setScannerService(ScannerServiceFactory.makeScannerService(wifiManager, handler, currentSettings));
         setFilterAdapter(new FilterAdapter(currentSettings)); */

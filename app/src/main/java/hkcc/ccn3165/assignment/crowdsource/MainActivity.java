@@ -54,9 +54,9 @@ public class MainActivity extends AppCompatActivity {
         Settings settings = mainContext.getSettings();
         settings.initializeDefaultValues();
 
-        DH = new StdDBHelper(mainContext.getContext());
-        mGPSService = new GPSService(mainContext.getMainActivity(), mainContext.getScreenWidth());
-        wifi = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
+        DH = mainContext.getDBHelper();
+        mGPSService = mainContext.getGPSService();
+        wifi = mainContext.getWifiManager();
         final boolean isPlayServicesInstalled = appInstalledOrNot("com.google.android.gms");
 
         save = (Button) findViewById(R.id.save);
