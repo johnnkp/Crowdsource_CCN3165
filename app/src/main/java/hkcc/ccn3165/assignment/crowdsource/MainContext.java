@@ -21,9 +21,11 @@ package hkcc.ccn3165.assignment.crowdsource;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.graphics.Point;
 import android.net.wifi.WifiManager;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.view.Display;
 import android.view.LayoutInflater;
 
 import com.vrem.wifianalyzer.settings.Repository;
@@ -43,12 +45,13 @@ public enum MainContext {
     // private VendorService vendorService;
     private Configuration configuration;
     // private FilterAdapter filterAdapter;
+    private int screenWidth;
 
     public Settings getSettings() {
         return settings;
     }
 
-    void setSettings(Settings settings) {
+    private void setSettings(Settings settings) {
         this.settings = settings;
     }
 
@@ -72,7 +75,7 @@ public enum MainContext {
         return mainActivity;
     }
 
-    void setMainActivity(MainActivity mainActivity) {
+    private void setMainActivity(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
     }
 
@@ -92,8 +95,21 @@ public enum MainContext {
         return configuration;
     }
 
-    void setConfiguration(Configuration configuration) {
+    private void setConfiguration(Configuration configuration) {
         this.configuration = configuration;
+    }
+
+
+    public int getScreenWidth() {
+        return screenWidth;
+    }
+
+    private void setScreenWidth() {
+        // https://alvinalexander.com/android/how-to-determine-android-screen-size-dimensions-orientation
+        Display display = mainActivity.getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        screenWidth = size.x;
     }
 
     /* public FilterAdapter getFilterAdapter() {
@@ -104,7 +120,7 @@ public enum MainContext {
         this.filterAdapter = filterAdapter;
     } */
 
-    void initialize(@NonNull MainActivity mainActivity) {
+    public void initialize(@NonNull MainActivity mainActivity) {
         Context applicationContext = mainActivity.getApplicationContext();
         WifiManager wifiManager = (WifiManager) applicationContext.getSystemService(Context.WIFI_SERVICE);
         Handler handler = new Handler();
@@ -114,6 +130,7 @@ public enum MainContext {
         setMainActivity(mainActivity);
         setConfiguration(currentConfiguration);
         setSettings(currentSettings);
+        setScreenWidth();
         /* setVendorService(VendorServiceFactory.makeVendorService(mainActivity.getResources()));
         setScannerService(ScannerServiceFactory.makeScannerService(wifiManager, handler, currentSettings));
         setFilterAdapter(new FilterAdapter(currentSettings)); */

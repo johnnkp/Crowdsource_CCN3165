@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         settings.initializeDefaultValues();
 
         DH = new StdDBHelper(mainContext.getContext());
-        mGPSService = new GPSService(MainActivity.this, getScreenWidth());
+        mGPSService = new GPSService(mainContext.getMainActivity(), mainContext.getScreenWidth());
         wifi = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
         final boolean isPlayServicesInstalled = appInstalledOrNot("com.google.android.gms");
 
@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         bssid = (TextView) findViewById(R.id.bssid);
         fre_set = (EditText) findViewById(R.id.fre_set);
 
-        if (getScreenWidth() <= 720) {
+        if (mainContext.getScreenWidth() <= 720) {
             fre.setText("Change\nFrequency");
             fre_set.setHint("Type frequency (seconds)");
         }
@@ -300,13 +300,5 @@ public class MainActivity extends AppCompatActivity {
         } catch (PackageManager.NameNotFoundException e) {
         }
         return false;
-    }
-
-    // https://alvinalexander.com/android/how-to-determine-android-screen-size-dimensions-orientation
-    public int getScreenWidth() {
-        Display display = getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        return size.x;
     }
 }
