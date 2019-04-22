@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Point;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -16,6 +17,7 @@ import android.os.CountDownTimer;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Display;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -42,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         DH = new StdDBHelper(this);
-        mGPSService = new GPSService(MainActivity.this);
+        mGPSService = new GPSService(MainActivity.this, getScreenWidth());
         wifi = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
         final boolean isPlayServicesInstalled = appInstalledOrNot("com.google.android.gms");
 
@@ -219,9 +221,20 @@ public class MainActivity extends AppCompatActivity {
         PackageManager pm = getPackageManager();
         try {
             pm.getPackageInfo(uri, PackageManager.GET_ACTIVITIES);
+            if (pm.getPackageInfo(uri, PackageManager.VERSION_CODE_HIGHEST).versionCode < 11925000) {
+                return false;
+            }
             return true;
         } catch (PackageManager.NameNotFoundException e) {
         }
         return false;
+    }
+
+    // https://alvinalexander.com/android/how-to-determine-android-screen-size-dimensions-orientation
+    public int getScreenWidth() {
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        return size.x;
     }
 }

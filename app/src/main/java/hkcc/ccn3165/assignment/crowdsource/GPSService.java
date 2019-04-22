@@ -5,11 +5,13 @@ import android.app.Service;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.Settings;
@@ -37,8 +39,11 @@ public class GPSService extends Service implements LocationListener {
     private static final long DISTANCE = 20;
     // Declaring a Location Manager
     protected LocationManager mLocationManager;
+    AlertDialog openGPS;
+    int screenWidth;
 
-    public GPSService(Context context) {
+    public GPSService(Context context, int width) {
+        screenWidth = width;
         this.mContext = context;
         mLocationManager = (LocationManager) mContext
                 .getSystemService(LOCATION_SERVICE);
@@ -175,21 +180,37 @@ public class GPSService extends Service implements LocationListener {
 
     // show settings to open GPS
     public void askUserToOpenGPS() {
-        AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(mContext);
-        // Setting Dialog Title
-        mAlertDialog.setTitle("Location not available, Open GPS?")
-                .setMessage("Activate GPS to use location services?")
-                .setPositiveButton("Open Settings", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                        mContext.startActivity(intent);
+        if (openGPS == null) {
+            AlertDialog.Builder openGPSBuilder = new AlertDialog.Builder(mContext)
+                    .setTitle("Location not available, Open GPS?")
+                    .setMessage("Activate GPS to use location services?")
+                    .setNegativeButton("Open Settings", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                            mContext.startActivity(intent);
+                        }
+                    })
+                    .setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+            if (screenWidth <= (720 + 72)) {
+                openGPSBuilder.setTitle("Location not available")
+                        .setMessage("Activate GPS to get location?");
+            }
+            openGPS = openGPSBuilder.create();
+            openGPS.setOnShowListener(new DialogInterface.OnShowListener() {
+                @Override
+                public void onShow(DialogInterface arg0) {
+                    openGPS.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.RED);
+                    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT_WATCH) {
+                        openGPS.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
                     }
-                })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                }).show();
+                }
+            });
+        }
+        openGPS.show();
     }
 
     // Updating the location when location changes
