@@ -27,17 +27,17 @@ import android.widget.Toast;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    CountDownTimer mCountDownTimer;
+    private WifiManager wifi;
+    private GPSService mGPSService;
+    Location location;
+    private CountDownTimer mCountDownTimer;
     public int f = 2000;
     public long startTime;
-    String email_name, email_title, email_content;
-    TextView current_location, bssid;
-    Button save, open, email, fre;
-    EditText fre_set;
-    private WifiManager wifi;
     public StdDBHelper DH = null;
-    GPSService mGPSService;
-    Location location;
+    private TextView current_location, bssid;
+    private Button save, open, email, fre;
+    EditText fre_set;
+    String email_name, email_title, email_content;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,8 +56,17 @@ public class MainActivity extends AppCompatActivity {
         bssid = (TextView) findViewById(R.id.bssid);
         fre_set = (EditText) findViewById(R.id.fre_set);
 
+        if (getScreenWidth() <= 720) {
+            fre.setText("Change\nFrequency");
+            fre_set.setHint("Type frequency (seconds)");
+        }
+
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.INTERNET,
+                    Manifest.permission.ACCESS_NETWORK_STATE,
+                    Manifest.permission.ACCESS_WIFI_STATE}, 1);
             return;
         }
 
@@ -69,18 +78,13 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        if (getScreenWidth() <= 720) {
-            fre.setText("Change\nFrequency");
-            fre_set.setHint("Type frequency (seconds)");
-        }
-
         obtainWifiInfo();
         frequency_of_scanning(f);
 
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String wifi = getwifi().toString();
+                String wifi = getwifiCSV().toString();
                 if (location == null) {
                     DH.input_table(createEmptyLocation().getLongitude(), createEmptyLocation().getLatitude(), wifi);
                 } else {
@@ -123,6 +127,14 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onDestroy() {
+        // http://yifeng.studio/2017/09/26/android-countdowntimer-using-attentions/
+        if (mCountDownTimer != null)
+            mCountDownTimer.cancel();
+        super.onDestroy();
+    }
+
     private void obtainWifiInfo() {
         if (wifi.getWifiState() != WifiManager.WIFI_STATE_ENABLED) {
             wifi.setWifiEnabled(true);
@@ -139,6 +151,17 @@ public class MainActivity extends AppCompatActivity {
 
             scanBuilder.append("\nSSID: " + scanResult.SSID
                     + "\nBSSID: " + scanResult.BSSID + "\n");
+        }
+        return scanBuilder;
+    }
+
+    public StringBuilder getwifiCSV() {
+        StringBuilder scanBuilder = new StringBuilder();
+        List<ScanResult> scanResults = wifi.getScanResults();
+
+        for (ScanResult scanResult : scanResults) {
+            scanBuilder.append("SSID: " + scanResult.SSID
+                    + " BSSID: " + scanResult.BSSID + " ");
         }
         return scanBuilder;
     }
