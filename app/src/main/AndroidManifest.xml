@@ -26,5 +26,6 @@
             android:name=".page2activity"
             android:label="@string/app_name">
         </activity>
+        <activity android:name=".SettingsActivity" />
     </application>
 </manifest>
