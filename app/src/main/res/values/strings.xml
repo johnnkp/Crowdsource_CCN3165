@@ -1,9 +1,11 @@
 <resources>
     <string name="app_name">Crowdsource</string>
-    <string name="theme_title">"Theme"</string>
-    <string name="theme_dark">"Dark"</string>
-    <string name="theme_light">"Light"</string>
-    <string name="theme_system">"System"</string>
+
     <string name="wifi_off_on_exit_title">"WiFi off on Exit"</string>
+    <string name="wifi_off_on_exit_key" translatable="false">"wifi_off_on_exit"</string>
+    <bool name="wifi_off_on_exit_default" translatable="false">false</bool>
+
     <string name="keep_screen_on_title">"Keep screen on"</string>
+    <string name="keep_screen_on_key" translatable="false">"keep_screen_on"</string>
+    <bool name="keep_screen_on_default" translatable="false">false</bool>
 </resources>

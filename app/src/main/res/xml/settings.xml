@@ -18,26 +18,16 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory>
-        <ListPreference
-            android:icon="@drawable/ic_color_lens"
-            android:defaultValue="0"
-            android:entries="@array/theme_array"
-            android:entryValues="@array/theme_index_array"
-            android:key="theme"
-            android:persistent="true"
-            android:summary="%s"
-            android:title="@string/theme_title"/>
-
         <android.support.v7.preference.SwitchPreferenceCompat
             android:icon="@drawable/ic_signal_wifi_off"
-            android:defaultValue="false"
-            android:key="wifi_off_on_exit"
+            android:defaultValue="@bool/wifi_off_on_exit_default"
+            android:key="@string/wifi_off_on_exit_key"
             android:title="@string/wifi_off_on_exit_title"/>
 
         <android.support.v7.preference.SwitchPreferenceCompat
             android:icon="@drawable/ic_brightness_low"
-            android:defaultValue="false"
-            android:key="keep_screen_on"
+            android:defaultValue="@bool/keep_screen_on_default"
+            android:key="@string/keep_screen_on_key"
             android:title="@string/keep_screen_on_title"/>
     </PreferenceCategory>
 </PreferenceScreen>
