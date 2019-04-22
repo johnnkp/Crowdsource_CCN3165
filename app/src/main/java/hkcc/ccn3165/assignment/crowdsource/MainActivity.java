@@ -26,6 +26,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.vrem.wifianalyzer.settings.Settings;
+
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -45,7 +47,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        DH = new StdDBHelper(this);
+
+        MainContext mainContext = MainContext.INSTANCE;
+        mainContext.initialize(this);
+
+        Settings settings = mainContext.getSettings();
+        settings.initializeDefaultValues();
+
+        DH = new StdDBHelper(mainContext.getContext());
         mGPSService = new GPSService(MainActivity.this, getScreenWidth());
         wifi = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
         final boolean isPlayServicesInstalled = appInstalledOrNot("com.google.android.gms");
