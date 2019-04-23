@@ -1,6 +1,6 @@
 /*
  * WiFiAnalyzer
- * Copyright (C) 2019  VREM Software Development <VREMSoftwareDevelopment@gmail.com>
+ * Copyright (C) 2019 VREM Software Development <VREMSoftwareDevelopment@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,17 +24,8 @@ import android.support.v7.preference.PreferenceFragmentCompat;
 import hkcc.ccn3165.assignment.crowdsource.R;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
-
     @Override
     public void onCreatePreferences(Bundle bundle, String rootKey) {
         addPreferencesFromResource(R.xml.settings);
-        /* if (BuildUtils.isMinVersionP()) {
-            findPreference(getString(R.string.scan_interval_key)).setVisible(false);
-            findPreference(getString(R.string.scan_fast_key)).setVisible(true);
-        } else {
-            findPreference(getString(R.string.scan_interval_key)).setVisible(true);
-            findPreference(getString(R.string.scan_fast_key)).setVisible(false);
-        } */
     }
-
 }
