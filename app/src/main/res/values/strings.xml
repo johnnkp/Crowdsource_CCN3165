@@ -5,7 +5,7 @@
     <string name="wifi_off_on_exit_key" translatable="false">"wifi_off_on_exit"</string>
     <bool name="wifi_off_on_exit_default" translatable="false">false</bool>
 
-    <string name="keep_screen_on_title">"Keep screen on"</string>
-    <string name="keep_screen_on_key" translatable="false">"keep_screen_on"</string>
-    <bool name="keep_screen_on_default" translatable="false">false</bool>
+    <string name="gps_off_on_exit_title">"GPS off on Exit"</string>
+    <string name="gps_off_on_exit_key" translatable="false">"gps_off_on_exit"</string>
+    <bool name="gps_off_on_exit_default" translatable="false">false</bool>
 </resources>

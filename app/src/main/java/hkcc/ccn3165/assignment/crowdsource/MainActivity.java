@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     public int f = 2000;
     public long startTime;
     public StdDBHelper DH = null;
+    Settings settings;
     private TextView current_location, bssid;
     private Button save, open, email, fre;
     EditText fre_set;
@@ -51,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         MainContext mainContext = MainContext.INSTANCE;
         mainContext.initialize(this);
 
-        Settings settings = mainContext.getSettings();
+        settings = mainContext.getSettings();
         settings.initializeDefaultValues();
 
         DH = mainContext.getDBHelper();
@@ -155,6 +156,10 @@ public class MainActivity extends AppCompatActivity {
         // http://yifeng.studio/2017/09/26/android-countdowntimer-using-attentions/
         if (mCountDownTimer != null)
             mCountDownTimer.cancel();
+        if (settings.isWiFiOffOnExit())
+            wifi.setWifiEnabled(false);
+        if (settings.isGPSOffOnExit())
+            mGPSService.closeGPS();
         super.onDestroy();
     }
 

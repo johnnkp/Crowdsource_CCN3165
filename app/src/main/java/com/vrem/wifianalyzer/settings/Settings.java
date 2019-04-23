@@ -118,8 +118,8 @@ public class Settings {
         return repository.getBoolean(R.string.wifi_off_on_exit_key, repository.getResourceBoolean(R.bool.wifi_off_on_exit_default));
     }
 
-    public boolean isKeepScreenOn() {
-        return repository.getBoolean(R.string.keep_screen_on_key, repository.getResourceBoolean(R.bool.keep_screen_on_default));
+    public boolean isGPSOffOnExit() {
+        return repository.getBoolean(R.string.gps_off_on_exit_key, repository.getResourceBoolean(R.bool.gps_off_on_exit_default));
     }
 
     /* @NonNull
