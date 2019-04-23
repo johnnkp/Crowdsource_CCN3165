@@ -30,11 +30,6 @@ import android.view.LayoutInflater;
 
 import com.vrem.wifianalyzer.settings.Repository;
 import com.vrem.wifianalyzer.settings.Settings;
-/* import com.vrem.wifianalyzer.vendor.model.VendorService;
-import com.vrem.wifianalyzer.vendor.model.VendorServiceFactory;
-import com.vrem.wifianalyzer.wifi.filter.adapter.FilterAdapter;
-import com.vrem.wifianalyzer.wifi.scanner.ScannerService;
-import com.vrem.wifianalyzer.wifi.scanner.ScannerServiceFactory; */
 
 public enum MainContext {
     INSTANCE;
@@ -44,10 +39,7 @@ public enum MainContext {
     private WifiManager wifiManager;
     private GPSService mGPSService;
     private StdDBHelper dbHelper;
-    // private ScannerService scannerService;
-    // private VendorService vendorService;
     private Configuration configuration;
-    // private FilterAdapter filterAdapter;
     private int screenWidth;
 
     public WifiManager getWifiManager() {
@@ -77,21 +69,6 @@ public enum MainContext {
     private void setDBHelper() {
         dbHelper = new StdDBHelper(getContext());
     }
-    /* public VendorService getVendorService() {
-        return vendorService;
-    }
-
-    void setVendorService(VendorService vendorService) {
-        this.vendorService = vendorService;
-    }
-
-    public ScannerService getScannerService() {
-        return scannerService;
-    }
-
-    void setScannerService(ScannerService scannerService) {
-        this.scannerService = scannerService;
-    } */
 
     public MainActivity getMainActivity() {
         return mainActivity;
@@ -121,7 +98,6 @@ public enum MainContext {
         this.configuration = configuration;
     }
 
-
     public int getScreenWidth() {
         return screenWidth;
     }
@@ -133,14 +109,6 @@ public enum MainContext {
         display.getSize(size);
         screenWidth = size.x;
     }
-
-    /* public FilterAdapter getFilterAdapter() {
-        return filterAdapter;
-    }
-
-    void setFilterAdapter(FilterAdapter filterAdapter) {
-        this.filterAdapter = filterAdapter;
-    } */
 
     public void initialize(@NonNull MainActivity mainActivity) {
         Context applicationContext = mainActivity.getApplicationContext();
@@ -155,9 +123,5 @@ public enum MainContext {
         setDBHelper();
         setConfiguration(currentConfiguration);
         setSettings(currentSettings);
-        /* setVendorService(VendorServiceFactory.makeVendorService(mainActivity.getResources()));
-        setScannerService(ScannerServiceFactory.makeScannerService(wifiManager, handler, currentSettings));
-        setFilterAdapter(new FilterAdapter(currentSettings)); */
     }
-
 }

@@ -1,14 +1,11 @@
 package hkcc.ccn3165.assignment.crowdsource;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.graphics.Point;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
@@ -17,7 +14,6 @@ import android.os.CountDownTimer;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -176,7 +172,6 @@ public class MainActivity extends AppCompatActivity {
         List<ScanResult> scanResults = wifi.getScanResults();
 
         for (ScanResult scanResult : scanResults) {
-
             scanBuilder.append("\nSSID: " + scanResult.SSID
                     + "\nBSSID: " + scanResult.BSSID + "\n");
         }
@@ -298,10 +293,7 @@ public class MainActivity extends AppCompatActivity {
         PackageManager pm = getPackageManager();
         try {
             pm.getPackageInfo(uri, PackageManager.GET_ACTIVITIES);
-            if (pm.getPackageInfo(uri, 0).versionCode < 11925000) {
-                return false;
-            }
-            return true;
+            return pm.getPackageInfo(uri, 0).versionCode >= 11925000;
         } catch (PackageManager.NameNotFoundException e) {
         }
         return false;
